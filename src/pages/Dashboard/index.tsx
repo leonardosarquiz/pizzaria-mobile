@@ -1,9 +1,11 @@
 
 import { useState } from "react";
 import { SafeAreaView, Text, View, TouchableOpacity, TextInput, StyleSheet, Alert } from "react-native";
+import { api } from "../../services/api";
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StackParamsList } from "../../routes/app.routes";
+
 
 
 
@@ -20,7 +22,17 @@ export default function Dashboard() {
       return Alert.alert('Mesa', 'Informe o numero da mesa')
     }
 
-    navigation.navigate('Order', { number: number, order_id: 'acdd0c7d-dc39-4cb7-bacf-83b26459faf2' })
+    const response = await api.post('/order', {
+      table: Number(number)
+    })
+
+
+
+
+    navigation.navigate('Order', { number: number, order_id: response.data.id })
+
+
+    setNumber('');
 
   }
 
