@@ -72,10 +72,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
     try {
+
       const response = await api.post('/session', {
         email,
         password
       })
+      console.log('sai')
 
       const { id, name, token } = response.data;
 
@@ -83,9 +85,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         ...response.data
       }
 
+
       await AsyncStorage.setItem('@sujeitopizzaria', JSON.stringify(data))
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+
 
       setUser({
         id,
@@ -97,6 +102,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setLoadingAuth(false);
     } catch (err) {
       console.log('erro ao acessar', err)
+
+      if (err instanceof Error) {
+        console.log('Error ao acessar', err)
+      }
+
       setLoadingAuth(false)
     }
   }
